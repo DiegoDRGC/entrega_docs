@@ -1,0 +1,105 @@
+{% extends "checklist/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+
+    <h3 class="mb-4 fw-bold">Dashboard de Checklists</h3>
+
+    <!-- Filtro por fecha -->
+    <form method="get" class="mb-4">
+        <div class="input-group" style="max-width: 300px;">
+            <input type="date" name="fecha" class="form-control" value="{{ fecha }}">
+            <button class="btn btn-primary">Filtrar</button>
+        </div>
+    </form>
+
+    <!-- Tarjetas resumen -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0">
+                <div class="card-body text-center">
+                    <h5 class="fw-bold">Total del día</h5>
+                    <h3 class="text-primary fw-bold">{{ total }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0">
+                <div class="card-body text-center">
+                    <h5 class="fw-bold">Completos</h5>
+                    <h3 class="text-success fw-bold">{{ completos }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0">
+                <div class="card-body text-center">
+                    <h5 class="fw-bold">Incompletos</h5>
+                    <h3 class="text-danger fw-bold">{{ incompletos }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0">
+                <div class="card-body text-center">
+                    <h5 class="fw-bold">Este mes</h5>
+                    <h3 class="text-primary fw-bold">{{ mes }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gráficas -->
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h6 class="fw-bold">Completos vs Incompletos</h6>
+                    <canvas id="pieChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h6 class="fw-bold">Clientes con más faltantes</h6>
+                    <canvas id="barChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+new Chart(document.getElementById('pieChart'), {
+    type: 'pie',
+    data: {
+        labels: ['Completos', 'Incompletos'],
+        datasets: [{
+            data: [{{ completos }}, {{ incompletos }}],
+        }]
+    }
+});
+
+new Chart(document.getElementById('barChart'), {
+    type: 'bar',
+    data: {
+        labels: {{ labels_json|safe }},
+        datasets: [{
+            label: 'Faltantes',
+            data: {{ data_json|safe }},
+        }]
+    }
+});
+</script>
+
+{% endblock %}

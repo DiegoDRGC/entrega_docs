@@ -1,0 +1,108 @@
+{% extends "checklist/base.html" %}
+
+{% block content %}
+<div class="card shadow">
+    <div class="card-header bg-primary text-white">
+        <h4>Detalles del Checklist</h4>
+    </div>
+
+    <div class="card-body">
+
+        <h5 class="fw-bold">{{ c.cliente }}</h5>
+        <p>
+            <strong>Operador:</strong> {{ c.operador }}<br>
+            <strong>Placas:</strong> {{ c.placas }}<br>
+            <strong>Fecha:</strong> {{ c.date }}<br>
+        </p>
+
+        <hr>
+
+        <h5 class="fw-bold">Documentos</h5>
+
+        <ul class="list-group mb-3">
+
+            <li class="list-group-item d-flex justify-content-between">
+                Carta TIF
+                {% if c.carta_tif %}
+                    <span class="badge bg-success">✔</span>
+                {% else %}
+                    <span class="badge bg-danger">✘</span>
+                {% endif %}
+            </li>
+
+            <li class="list-group-item d-flex justify-content-between">
+                Factura
+                {% if c.factura %}
+                    <span class="badge bg-success">✔</span>
+                {% else %}
+                    <span class="badge bg-danger">✘</span>
+                {% endif %}
+            </li>
+
+            <li class="list-group-item d-flex justify-content-between">
+                Copias TIF Porteo
+                {% if c.copias_tif_porteo %}
+                    <span class="badge bg-success">✔</span>
+                {% else %}
+                    <span class="badge bg-danger">✘</span>
+                {% endif %}
+            </li>
+
+            <li class="list-group-item d-flex justify-content-between">
+                Orden de compra
+                {% if c.orden_compra %}
+                    <span class="badge bg-success">✔</span>
+                {% else %}
+                    <span class="badge bg-danger">✘</span>
+                {% endif %}
+            </li>
+
+            <li class="list-group-item d-flex justify-content-between">
+                Confirmación de cita
+                {% if c.confirmacion_cita %}
+                    <span class="badge bg-success">✔</span>
+                {% else %}
+                    <span class="badge bg-danger">✘</span>
+                {% endif %}
+            </li>
+
+            <li class="list-group-item d-flex justify-content-between">
+                Control de embarque
+                {% if c.control_embarque %}
+                    <span class="badge bg-success">✔</span>
+                {% else %}
+                    <span class="badge bg-danger">✘</span>
+                {% endif %}
+            </li>
+
+            {% if c.other_name %}
+            <li class="list-group-item d-flex justify-content-between">
+                {{ c.other_name }}
+                {% if c.other_present %}
+                    <span class="badge bg-success">✔</span>
+                {% else %}
+                    <span class="badge bg-danger">✘</span>
+                {% endif %}
+            </li>
+            {% endif %}
+
+        </ul>
+
+        <hr>
+
+        <h5>
+            Estatus:
+            {% if c.is_complete %}
+                <span class="badge bg-success px-3 py-2">COMPLETO</span>
+            {% else %}
+                <span class="badge bg-danger px-3 py-2">INCOMPLETO</span>
+            {% endif %}
+        </h5>
+
+        <div class="mt-4 text-end">
+            <a class="btn btn-secondary" href="/">Regresar</a>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends "checklist/base.html" %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h3>Checklist registrados</h3>
+    <a href="/nuevo/" class="btn btn-success">+ Nuevo Checklist</a>
+</div>
+
+<table class="table table-bordered table-striped shadow">
+    <thead class="table-primary">
+        <tr>
+            <th>ID</th>
+            <th>Cliente</th>
+            <th>Operador</th>
+            <th>Placas</th>
+            <th>Fecha</th>
+            <th>Estatus</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for c in checklist %}
+        <tr>
+            <td>{{ c.id }}</td>
+            <td>{{ c.cliente }}</td>
+            <td>{{ c.operador }}</td>
+            <td>{{ c.placas }}</td>
+            <td>{{ c.date }}</td>
+
+            <td>
+                {% if c.is_complete %}
+                    <span class="badge bg-success px-3 py-2">COMPLETO</span>
+                {% else %}
+                    <span class="badge bg-danger px-3 py-2">INCOMPLETO</span>
+                {% endif %}
+            </td>
+
+            <!-- 🔥 Botón de detalles -->
+            <td>
+                <a href="/detalle/{{ c.id }}/" class="btn btn-primary btn-sm">
+                    Ver
+                </a>
+            </td>
+
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends "checklist/base.html" %}
+{% load form_filters %}
+
+{% block content %}
+<div class="card shadow">
+    <div class="card-header bg-primary text-white">
+        <h4>Nuevo Checklist</h4>
+    </div>
+
+    <div class="card-body">
+        <form method="post" class="row g-3">
+            {% csrf_token %}
+
+            <!-- CAMPOS DE TEXTO -->
+            <div class="col-md-4">
+                <label class="form-label">Cliente</label>
+                {{ form.cliente|add_class:"form-control" }}
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label">Operador</label>
+                {{ form.operador|add_class:"form-control" }}
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label">Placas</label>
+                {{ form.placas|add_class:"form-control" }}
+            </div>
+
+            <!-- TÍTULO -->
+            <h5 class="mt-4 fw-bold">Documentos recibidos</h5>
+
+            <!-- CHECKBOXES -->
+            {% for field in form %}
+                {% if field.field.widget.input_type == "checkbox" and field.name != "other_present" %}
+                <div class="col-md-6 form-check">
+                    {{ field|add_class:"form-check-input" }}
+                    <label class="form-check-label ms-2">{{ field.label }}</label>
+                </div>
+                {% endif %}
+            {% endfor %}
+
+            <!-- OTRO DOCUMENTO -->
+            <div class="col-md-6">
+                <label class="form-label">Otro documento</label>
+                {{ form.other_name|add_class:"form-control" }}
+            </div>
+
+            <div class="col-md-6 form-check mt-4">
+                {{ form.other_present|add_class:"form-check-input" }}
+                <label class="form-check-label ms-2">¿Recibido?</label>
+            </div>
+
+            <!-- BOTONES -->
+            <div class="col-12 text-end mt-3">
+                <a class="btn btn-secondary" href="/">Cancelar</a>
+                <button class="btn btn-primary" type="submit">Guardar</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
