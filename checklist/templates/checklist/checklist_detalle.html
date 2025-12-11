@@ -1,108 +1,56 @@
-{% extends "checklist/base.html" %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle del Checklist</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
 
-{% block content %}
-<div class="card shadow">
-    <div class="card-header bg-primary text-white">
-        <h4>Detalles del Checklist</h4>
-    </div>
+<body class="bg-light">
 
-    <div class="card-body">
+<div class="container mt-4">
+    <a href="/dashboard" class="btn btn-secondary mb-3">← Volver al Dashboard</a>
 
-        <h5 class="fw-bold">{{ c.cliente }}</h5>
-        <p>
-            <strong>Operador:</strong> {{ c.operador }}<br>
-            <strong>Placas:</strong> {{ c.placas }}<br>
-            <strong>Fecha:</strong> {{ c.date }}<br>
-        </p>
+    <div class="card shadow-lg p-4">
+        <h2 class="mb-4">Detalle del Checklist</h2>
 
-        <hr>
-
-        <h5 class="fw-bold">Documentos</h5>
-
-        <ul class="list-group mb-3">
-
-            <li class="list-group-item d-flex justify-content-between">
-                Carta TIF
-                {% if c.carta_tif %}
-                    <span class="badge bg-success">✔</span>
-                {% else %}
-                    <span class="badge bg-danger">✘</span>
-                {% endif %}
-            </li>
-
-            <li class="list-group-item d-flex justify-content-between">
-                Factura
-                {% if c.factura %}
-                    <span class="badge bg-success">✔</span>
-                {% else %}
-                    <span class="badge bg-danger">✘</span>
-                {% endif %}
-            </li>
-
-            <li class="list-group-item d-flex justify-content-between">
-                Copias TIF Porteo
-                {% if c.copias_tif_porteo %}
-                    <span class="badge bg-success">✔</span>
-                {% else %}
-                    <span class="badge bg-danger">✘</span>
-                {% endif %}
-            </li>
-
-            <li class="list-group-item d-flex justify-content-between">
-                Orden de compra
-                {% if c.orden_compra %}
-                    <span class="badge bg-success">✔</span>
-                {% else %}
-                    <span class="badge bg-danger">✘</span>
-                {% endif %}
-            </li>
-
-            <li class="list-group-item d-flex justify-content-between">
-                Confirmación de cita
-                {% if c.confirmacion_cita %}
-                    <span class="badge bg-success">✔</span>
-                {% else %}
-                    <span class="badge bg-danger">✘</span>
-                {% endif %}
-            </li>
-
-            <li class="list-group-item d-flex justify-content-between">
-                Control de embarque
-                {% if c.control_embarque %}
-                    <span class="badge bg-success">✔</span>
-                {% else %}
-                    <span class="badge bg-danger">✘</span>
-                {% endif %}
-            </li>
-
-            {% if c.other_name %}
-            <li class="list-group-item d-flex justify-content-between">
-                {{ c.other_name }}
-                {% if c.other_present %}
-                    <span class="badge bg-success">✔</span>
-                {% else %}
-                    <span class="badge bg-danger">✘</span>
-                {% endif %}
-            </li>
-            {% endif %}
-
-        </ul>
-
-        <hr>
-
-        <h5>
-            Estatus:
-            {% if c.is_complete %}
-                <span class="badge bg-success px-3 py-2">COMPLETO</span>
-            {% else %}
-                <span class="badge bg-danger px-3 py-2">INCOMPLETO</span>
-            {% endif %}
-        </h5>
-
-        <div class="mt-4 text-end">
-            <a class="btn btn-secondary" href="/">Regresar</a>
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <strong>Cliente:</strong> {{ checklist.cliente }}
+            </div>
+            <div class="col-md-4">
+                <strong>Operador:</strong> {{ checklist.operador }}
+            </div>
+            <div class="col-md-4">
+                <strong>Placas:</strong> {{ checklist.placas }}
+            </div>
         </div>
 
+        <hr>
+
+        <h4>Documentos</h4>
+
+        <div class="row mt-3">
+            <div class="col-md-4"><strong>Carta TIF:</strong> {{ checklist.carta_tif }}</div>
+            <div class="col-md-4"><strong>Factura:</strong> {{ checklist.factura }}</div>
+            <div class="col-md-4"><strong>Copias TIF Porteo:</strong> {{ checklist.copias_tif_porteo }}</div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-md-4"><strong>Orden de Compra:</strong> {{ checklist.orden_compra }}</div>
+            <div class="col-md-4"><strong>Confirmación de Cita:</strong> {{ checklist.confirmacion_cita }}</div>
+            <div class="col-md-4"><strong>Control de Embarque:</strong> {{ checklist.control_embarque }}</div>
+        </div>
+
+        {% if checklist.other_name %}
+        <div class="row mt-3">
+            <div class="col-md-4">
+                <strong>{{ checklist.other_name }}:</strong> {{ checklist.other_present }}
+            </div>
+        </div>
+        {% endif %}
     </div>
 </div>
-{% endblock %}
+
+</body>
+</html>
