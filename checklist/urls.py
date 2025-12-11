@@ -10,4 +10,5 @@ urlpatterns = [
 ]
 
 
+path("detalle/<int:pk>/", views.detalle_checklist, name="detalle"),
 

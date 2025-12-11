@@ -14,6 +14,12 @@ def home(request):
         "checklist": data
     })
 
+from django.shortcuts import render, get_object_or_404
+from .models import Checklist
+
+def detalle_checklist(request, pk):
+    checklist = get_object_or_404(Checklist, pk=pk)
+    return render(request, "checklist/detalle.html", {"checklist": checklist})
 
 # ----------------------------------------------------
 # CREAR NUEVO CHECKLIST

@@ -1,0 +1,16 @@
+<h2>Detalle del Checklist</h2>
+
+<p>Cliente: {{ checklist.cliente }}</p>
+<p>Operador: {{ checklist.operador }}</p>
+<p>Placas: {{ checklist.placas }}</p>
+
+<p>Carta TIF: {{ checklist.carta_tif }}</p>
+<p>Factura: {{ checklist.factura }}</p>
+<p>Copias TIF Porteo: {{ checklist.copias_tif_porteo }}</p>
+<p>Orden de Compra: {{ checklist.orden_compra }}</p>
+<p>Confirmación de Cita: {{ checklist.confirmacion_cita }}</p>
+<p>Control de Embarque: {{ checklist.control_embarque }}</p>
+
+{% if checklist.other_name %}
+<p>{{ checklist.other_name }}: {{ checklist.other_present }}</p>
+{% endif %}
