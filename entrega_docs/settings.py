@@ -5,7 +5,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-secret-key-demo'
 DEBUG = True
 
-ALLOWED_HOSTS = []
+import os
+
+RENDER_EXTERNAL_HOSTNAME = os.getenv("RENDER_EXTERNAL_HOSTNAME")
+
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS = [RENDER_EXTERNAL_HOSTNAME, "127.0.0.1", "localhost"]
+else:
+    ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
+
+
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -48,14 +58,17 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'entrega_docs.wsgi.application'
 
+import dj_database_url
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default='sqlite:///db.sqlite3'
+    )
 }
+
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = []
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+STATIC_ROOT = BASE_DIR / "staticfiles"
