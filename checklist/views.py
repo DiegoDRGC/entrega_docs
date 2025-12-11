@@ -66,29 +66,43 @@ def reporte_csv(request):
 # ----------------------------------------------------
 # DASHBOARD
 # ----------------------------------------------------
+from django.db.models import Q
+from django.utils import timezone
+import json
+
 def dashboard(request):
-    data = Checklist.objects.all()  # obtener todos los registros
+    # Fecha de hoy
+    hoy = timezone.localdate()
 
-    total = data.count()
+    # Registros totales
+    total = Checklist.objects.count()
 
-    # calcular completos/incompletos usando la propiedad is_complete
-    completos = sum(1 for c in data if c.is_complete)
-    incompletos = total - completos
+    # Incompletos (si cualquier campo está en False)
+    incompletos = Checklist.objects.filter(
+        Q(carta_tif=False) |
+        Q(factura=False) |
+        Q(copias_tif_porteo=False) |
+        Q(orden_compra=False) |
+        Q(confirmacion_cita=False) |
+        Q(control_embarque=False) |
+        Q(other_present=False)
+    ).count()
 
-    return render(request, "checklist/dashboard.html", {
+    # Completos = todos los campos True
+    completos = total - incompletos
+
+    # Datos por día (últimos 7 días)
+    ultimos = Checklist.objects.order_by("-created_at")[:7][::-1]
+
+    labels = [reg.created_at.strftime("%d-%m") for reg in ultimos]
+    data_registros = [1 for _ in ultimos]  # Cada registro vale 1
+
+    context = {
         "total": total,
+        "incompletos": incompletos,
         "completos": completos,
-        "incompletos": incompletos
-    })
+        "labels_json": json.dumps(labels),
+        "data_json": json.dumps(data_registros),
+    }
 
-
-
-# ----------------------------------------------------
-# VISTA DE DETALLES
-# ----------------------------------------------------
-def detalle_checklist(request, pk):
-    checklist = Checklist.objects.get(id=pk)
-
-    return render(request, "checklist/checklist_detalle.html", {
-        "c": checklist
-    })
+    return render(request, "checklist/dashboard.html", context)

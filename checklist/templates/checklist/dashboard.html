@@ -54,27 +54,65 @@
     </div>
 
     <!-- Gráficas -->
-    <div class="row">
-        <div class="col-md-6">
-            <div class="card shadow-sm mb-4">
-                <div class="card-body">
-                    <h6 class="fw-bold">Completos vs Incompletos</h6>
-                    <canvas id="pieChart"></canvas>
-                </div>
+   <div class="container mt-4">
+    <h2 class="mb-4">Dashboard</h2>
+
+    <div class="row text-center">
+        <div class="col-md-4">
+            <div class="card shadow-sm p-3">
+                <h4>Total</h4>
+                <h2>{{ total }}</h2>
             </div>
         </div>
 
-        <div class="col-md-6">
-            <div class="card shadow-sm mb-4">
-                <div class="card-body">
-                    <h6 class="fw-bold">Clientes con más faltantes</h6>
-                    <canvas id="barChart"></canvas>
-                </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm p-3">
+                <h4>Completos</h4>
+                <h2>{{ completos }}</h2>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm p-3">
+                <h4>Incompletos</h4>
+                <h2>{{ incompletos }}</h2>
             </div>
         </div>
     </div>
 
+    <hr class="my-4">
+
+    <h3 class="text-center">Registros recientes</h3>
+    <canvas id="chartRegistros" height="120"></canvas>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    const ctx = document.getElementById('chartRegistros').getContext('2d');
+
+    const labels = {{ labels_json|safe }};
+    const data = {{ data_json|safe }};
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Registros por día',
+                data: data,
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+</script>
+
 
 <!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
