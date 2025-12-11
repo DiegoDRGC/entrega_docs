@@ -1,9 +1,13 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
+from django.template.loader import get_template
+from django.db.models import Q
+from django.utils import timezone
+import csv
+import json
+
 from .models import Checklist
 from .forms import ChecklistForm
-import csv
-
 
 # ----------------------------------------------------
 # HOME – LISTADO PRINCIPAL
@@ -14,12 +18,14 @@ def home(request):
         "checklist": data
     })
 
-from django.shortcuts import render, get_object_or_404
-from .models import Checklist
 
+# ----------------------------------------------------
+# DETALLE DE CHECKLIST
+# ----------------------------------------------------
 def detalle_checklist(request, pk):
     checklist = get_object_or_404(Checklist, pk=pk)
     return render(request, "checklist/detalle.html", {"checklist": checklist})
+
 
 # ----------------------------------------------------
 # CREAR NUEVO CHECKLIST
@@ -69,13 +75,6 @@ def reporte_csv(request):
 # ----------------------------------------------------
 # DASHBOARD
 # ----------------------------------------------------
-# ----------------------------------------------------
-# DASHBOARD
-# ----------------------------------------------------
-from django.db.models import Q
-from django.utils import timezone
-import json
-
 def dashboard(request):
     # Fecha de hoy
     hoy = timezone.localdate()
@@ -112,3 +111,28 @@ def dashboard(request):
     }
 
     return render(request, "checklist/dashboard.html", context)
+
+
+# ----------------------------------------------------
+# EXPORTAR PDF
+# ----------------------------------------------------
+from xhtml2pdf import pisa
+
+def exportar_pdf(request, checklist_id):
+    checklist = get_object_or_404(Checklist, id=checklist_id)
+
+    template_path = 'checklist/pdf_template.html'
+    context = {'checklist': checklist}
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="Checklist_{checklist_id}.pdf"'
+
+    template = get_template(template_path)
+    html = template.render(context)
+
+    pisa_status = pisa.CreatePDF(html, dest=response)
+
+    if pisa_status.err:
+        return HttpResponse("Error al generar PDF", status=500)
+
+    return response

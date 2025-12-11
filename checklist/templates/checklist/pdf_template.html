@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { color: #0d6efd; }
+        h3 { margin-top: 20px; }
+        .item { margin-bottom: 8px; padding: 8px; border-bottom: 1px solid #ccc; }
+        .yes { color: green; font-weight: bold; }
+        .no { color: red; font-weight: bold; }
+    </style>
+</head>
+
+<body>
+
+<h1>Detalle del Checklist</h1>
+
+<h3>Información General</h3>
+<p><strong>Cliente:</strong> {{ checklist.cliente }}</p>
+<p><strong>Operador:</strong> {{ checklist.operador }}</p>
+<p><strong>Placas:</strong> {{ checklist.placas }}</p>
+<p><strong>Fecha:</strong> {{ checklist.date }}</p>
+
+<h3>Documentos</h3>
+
+<div class="item">
+    Carta TIF:
+    {% if checklist.carta_tif %}<span class="yes">Sí</span>{% else %}<span class="no">No</span>{% endif %}
+</div>
+
+<div class="item">
+    Factura:
+    {% if checklist.factura %}<span class="yes">Sí</span>{% else %}<span class="no">No</span>{% endif %}
+</div>
+
+<div class="item">
+    Copias TIF Porteo:
+    {% if checklist.copias_tif_porteo %}<span class="yes">Sí</span>{% else %}<span class="no">No</span>{% endif %}
+</div>
+
+<div class="item">
+    Orden de Compra:
+    {% if checklist.orden_compra %}<span class="yes">Sí</span>{% else %}<span class="no">No</span>{% endif %}
+</div>
+
+<div class="item">
+    Confirmación de Cita:
+    {% if checklist.confirmacion_cita %}<span class="yes">Sí</span>{% else %}<span class="no">No</span>{% endif %}
+</div>
+
+<div class="item">
+    Control de Embarque:
+    {% if checklist.control_embarque %}<span class="yes">Sí</span>{% else %}<span class="no">No</span>{% endif %}
+</div>
+
+{% if checklist.other_name %}
+<div class="item">
+    {{ checklist.other_name }}:
+    {% if checklist.other_present %}<span class="yes">Sí</span>{% else %}<span class="no">No</span>{% endif %}
+</div>
+{% endif %}
+
+</body>
+</html>

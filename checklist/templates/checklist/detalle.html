@@ -1,16 +1,223 @@
-<h2>Detalle del Checklist</h2>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle del Checklist</title>
 
-<p>Cliente: {{ checklist.cliente }}</p>
-<p>Operador: {{ checklist.operador }}</p>
-<p>Placas: {{ checklist.placas }}</p>
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-<p>Carta TIF: {{ checklist.carta_tif }}</p>
-<p>Factura: {{ checklist.factura }}</p>
-<p>Copias TIF Porteo: {{ checklist.copias_tif_porteo }}</p>
-<p>Orden de Compra: {{ checklist.orden_compra }}</p>
-<p>Confirmación de Cita: {{ checklist.confirmacion_cita }}</p>
-<p>Control de Embarque: {{ checklist.control_embarque }}</p>
+    <!-- Íconos -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
-{% if checklist.other_name %}
-<p>{{ checklist.other_name }}: {{ checklist.other_present }}</p>
-{% endif %}
+    <style>
+        body {
+            background: #eef2f7;
+        }
+
+        .title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #0d6efd;
+        }
+
+        .doc-card {
+            border-radius: 18px;
+            padding: 15px;
+            background: white;
+            transition: 0.2s ease;
+        }
+
+        .doc-card:hover {
+            background: #f1f5ff;
+            transform: scale(1.02);
+        }
+
+        .doc-icon {
+            font-size: 2.2rem;
+        }
+
+        .doc-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .status-yes {
+            color: #198754;
+            font-weight: bold;
+        }
+
+        .status-no {
+            color: #dc3545;
+            font-weight: bold;
+        }
+
+        .info-box {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        .info-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #0d6efd;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container mt-5 mb-5">
+
+    <div class="d-flex justify-content-between mb-4">
+        <h2 class="title"><i class="bi bi-clipboard2-check"></i> Detalle del Checklist</h2>
+
+        <div class="d-flex gap-2">
+            <!-- Botón regresar -->
+            <a href="/dashboard" class="btn btn-outline-primary">
+                <i class="bi bi-arrow-left"></i> Regresar
+            </a>
+
+            <!-- Botón exportar PDF -->
+            <a href="/pdf/{{ checklist.id }}/" class="btn btn-success">
+                <i class="bi bi-file-earmark-pdf"></i> Exportar PDF
+            </a>
+        </div>
+    </div>
+
+    <!-- Información General -->
+    <div class="info-box shadow-sm mb-4">
+        <h4 class="info-title"><i class="bi bi-person-badge"></i> Información General</h4>
+
+        <div class="row mt-3">
+            <div class="col-md-4"><strong>Cliente:</strong> {{ checklist.cliente }}</div>
+            <div class="col-md-4"><strong>Operador:</strong> {{ checklist.operador }}</div>
+            <div class="col-md-4"><strong>Placas:</strong> {{ checklist.placas }}</div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-md-4"><strong>Fecha:</strong> {{ checklist.date }}</div>
+            <div class="col-md-4"><strong>Registrado:</strong> {{ checklist.created_at|date:"d/m/Y H:i" }}</div>
+        </div>
+    </div>
+
+    <!-- Documentos -->
+    <h4 class="info-title mb-3"><i class="bi bi-folder-check"></i> Documentos Entregados</h4>
+
+    <div class="row g-3">
+
+        <!-- Carta TIF -->
+        <div class="col-md-6 col-lg-4">
+            <div class="doc-card shadow-sm">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <div class="doc-name"><i class="bi bi-file-earmark-text doc-icon"></i> Carta TIF</div>
+                    </div>
+
+                    {% if checklist.carta_tif %}
+                        <span class="status-yes"><i class="bi bi-check-circle-fill"></i> Sí</span>
+                    {% else %}
+                        <span class="status-no"><i class="bi bi-x-circle-fill"></i> No</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Factura -->
+        <div class="col-md-6 col-lg-4">
+            <div class="doc-card shadow-sm">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="doc-name"><i class="bi bi-receipt doc-icon"></i> Factura</div>
+
+                    {% if checklist.factura %}
+                        <span class="status-yes"><i class="bi bi-check-circle-fill"></i> Sí</span>
+                    {% else %}
+                        <span class="status-no"><i class="bi bi-x-circle-fill"></i> No</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Copias TIF Porteo -->
+        <div class="col-md-6 col-lg-4">
+            <div class="doc-card shadow-sm">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="doc-name"><i class="bi bi-layers doc-icon"></i> Copias TIF Porteo</div>
+
+                    {% if checklist.copias_tif_porteo %}
+                        <span class="status-yes"><i class="bi bi-check-circle-fill"></i> Sí</span>
+                    {% else %}
+                        <span class="status-no"><i class="bi bi-x-circle-fill"></i> No</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Orden de compra -->
+        <div class="col-md-6 col-lg-4">
+            <div class="doc-card shadow-sm">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="doc-name"><i class="bi bi-file-earmark-font doc-icon"></i> Orden de Compra</div>
+
+                    {% if checklist.orden_compra %}
+                        <span class="status-yes"><i class="bi bi-check-circle-fill"></i> Sí</span>
+                    {% else %}
+                        <span class="status-no"><i class="bi bi-x-circle-fill"></i> No</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Confirmación de cita -->
+        <div class="col-md-6 col-lg-4">
+            <div class="doc-card shadow-sm">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="doc-name"><i class="bi bi-calendar-check doc-icon"></i> Confirmación de Cita</div>
+
+                    {% if checklist.confirmacion_cita %}
+                        <span class="status-yes"><i class="bi bi-check-circle-fill"></i> Sí</span>
+                    {% else %}
+                        <span class="status-no"><i class="bi bi-x-circle-fill"></i> No</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Control de embarque -->
+        <div class="col-md-6 col-lg-4">
+            <div class="doc-card shadow-sm">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="doc-name"><i class="bi bi-truck doc-icon"></i> Control de Embarque</div>
+
+                    {% if checklist.control_embarque %}
+                        <span class="status-yes"><i class="bi bi-check-circle-fill"></i> Sí</span>
+                    {% else %}
+                        <span class="status-no"><i class="bi bi-x-circle-fill"></i> No</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        {% if checklist.other_name %}
+        <div class="col-md-6 col-lg-4">
+            <div class="doc-card shadow-sm">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="doc-name"><i class="bi bi-folder2-open doc-icon"></i> {{ checklist.other_name }}</div>
+
+                    {% if checklist.other_present %}
+                        <span class="status-yes"><i class="bi bi-check-circle-fill"></i> Sí</span>
+                    {% else %}
+                        <span class="status-no"><i class="bi bi-x-circle-fill"></i> No</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+
+</div>
+
+</body>
+</html>
